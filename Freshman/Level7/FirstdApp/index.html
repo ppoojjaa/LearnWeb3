@@ -1,0 +1,74 @@
+<html>
+
+<body>
+    <h1> This is first dApp</h1>
+    <p>We are going to set up some mood</p>
+    <label for="mood">Input mood: </label>
+    <input type="text" id="mood" /> <br> <br>
+    <div>
+        <button onclick="getMood()">Get Mood</button> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <button onclick="setMood()">Set Mood</button>
+    </div>
+</body>
+
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+<script>
+    const MoodContractAddress = "0x8e22EDe114a5d1f20231d93DF57692929F45E174"; //address from the smart contract which was deployed on the remix
+
+    const MoodContractABI = [{
+        "inputs": [{
+            "internalType": "string",
+            "name": "_mood",
+            "type": "string"
+        }],
+        "name": "setMood",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "getMood",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }];
+
+    let MoodContract;
+    let signer;
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "ropsten");
+    provider.send("eth_requestAccounts", []).then(() => {
+        provider.listAccounts().then((accounts) => { //gets a list of all accounts connected to the metamask
+
+            signer = provider.getSigner(accounts[0]); //collect the first account and get the signer of the account beacause i want to sign this transaction and approve the getmood function.
+
+            //creating an contract instance of the account
+            MoodContract = new ethers.Contract(
+                MoodContractAddress,
+                MoodContractABI,
+                signer
+            );
+        });
+    });
+
+    async function setMood() {
+        const mood = document.getElementById("mood").value;
+        console.log(mood);
+        const setMoodProm = MoodContract.setMood(mood);
+
+        await this.setMoodProm;
+    }
+
+    async function getMood() {
+        const getMood = MoodContract.getMood();
+        const Moods = await getMood;
+        console.log("Helo world");
+
+    }
+</script>
+
+</html>
