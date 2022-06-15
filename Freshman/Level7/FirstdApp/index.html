@@ -42,10 +42,11 @@
 
     const provider = new ethers.providers.Web3Provider(window.ethereum, "ropsten");
     provider.send("eth_requestAccounts", []).then(() => {
+        console.log(provider);
         provider.listAccounts().then((accounts) => { //gets a list of all accounts connected to the metamask
 
             signer = provider.getSigner(accounts[0]); //collect the first account and get the signer of the account beacause i want to sign this transaction and approve the getmood function.
-
+            console.log(signer);
             //creating an contract instance of the account
             MoodContract = new ethers.Contract(
                 MoodContractAddress,
@@ -59,14 +60,14 @@
         const mood = document.getElementById("mood").value;
         console.log(mood);
         const setMoodProm = MoodContract.setMood(mood);
-
+        console.log(setMoodProm);
         await this.setMoodProm;
     }
 
     async function getMood() {
         const getMood = MoodContract.getMood();
         const Moods = await getMood;
-        console.log("Helo world");
+        console.log(Moods);
 
     }
 </script>
